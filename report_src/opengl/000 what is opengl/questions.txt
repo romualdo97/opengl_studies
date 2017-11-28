@@ -10,11 +10,8 @@ https://learnopengl.com/#!Getting-started/OpenGL
 
 - escriba una pequeña referencia en diagramas de maquinas de estado
 
-- busque un diagrama de maquina de estados para opengl 3.3 o posterior
+- busque un diagrama de maquina de estados para cualquier version de opengl
 
 - ¿que es un objeto de opengl y para que podrian servir?
 
 - cuales son las diferencias entre opengl inmediate mode y core profile
-
-- donde puedo encontrar todas las especificaciones de opengl
-https://www.khronos.org/registry/OpenGL/index_gl.php
