@@ -1,6 +1,6 @@
 # 1) ¿Qué es un contexto OpenGL?
 
-Un contexto OpenGL son muchas cosas se concidera la parte principal de una aplicación OpenGL, el contexto es el encargado de almacenar todos los estados asociados a la instancia actual de OpenGL, se puede pensar en un contexto OpenGL como el objeto que almacena a toda la aplicación OpenGL.
+Se concidera la parte principal de una aplicación OpenGL, el contexto es el encargado de almacenar todos los estados asociados a la instancia actual de OpenGL, se puede pensar en un contexto OpenGL como el objeto que almacena a toda la aplicación OpenGL, aunque una aplicacion puede tener varios contextos al mismo tiempo.
 
 from [docs](https://www.khronos.org/opengl/wiki/OpenGL_Context):
 
