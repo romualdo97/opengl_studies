@@ -3,6 +3,12 @@
 
 #include <iostream>
 
+// callback for window size modification
+void framebuffer_size_cb(GLFWwindow *window, int width, int heigth);
+
+// process keyboar inputs
+void process_input(GLFWwindow *window);
+
 int main(void)
 {
 	
@@ -35,15 +41,37 @@ int main(void)
 	}
 	// =========================================================================
 	
+	// =========================================================================
+	// 4. REGISSTER GLFW EVENTS
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_cb);
+	// =========================================================================
+
 	glViewport(0, 0, 980, 640);
 
 	while(!glfwWindowShouldClose(window))
 	{
-		
+		process_input(window); // process keyboard inputs
+
+		glClearColor(0.5, 0.7, 0.5, 1.0); // set the clear color
+		glClear(GL_COLOR_BUFFER_BIT); // clear the color buffer bitfield
 
 		glfwSwapBuffers(window); // swap opengl back and front bufers
 		glfwPollEvents(); // listen for events
 	}
 	
+	glfwTerminate();
 	return 0;
+}
+
+void framebuffer_size_cb(GLFWwindow *window, int width, int heigth)
+{
+	glViewport(0, 0, width, heigth);
+}
+
+void process_input(GLFWwindow *window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+	{
+		glfwSetWindowShouldClose(window, true);
+	}
 }

@@ -1,0 +1,5 @@
+﻿  glad.c
+  main.cpp
+c:\users\user\documents\visual studio 2017\projects\opengl_studies\001_how_start_coding_opengl\vs_v15_2017\001_user_inputs\main.cpp(55): warning C4305: 'argumento': truncamiento de 'double' a 'GLfloat'
+  001_user_inputs.vcxproj -> C:\Users\user\Documents\Visual Studio 2017\Projects\opengl_studies\001_how_start_coding_opengl\vs_v15_2017\001_user_inputs\Debug\001_user_inputs.exe
+  001_user_inputs.vcxproj -> C:\Users\user\Documents\Visual Studio 2017\Projects\opengl_studies\001_how_start_coding_opengl\vs_v15_2017\001_user_inputs\Debug\001_user_inputs.pdb (Partial PDB)
