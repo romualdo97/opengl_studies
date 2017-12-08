@@ -13,7 +13,7 @@
 
 **Tell OpenGL how it should interpret the vertex data:**
 
-		// tell OpenGL how it should interpret the vertex data(per
+	// tell OpenGL how it should interpret the vertex data(per
 	// vertex attribute) using glVertexAttribPointer:
 	// glVertexAttribPointer(index = [vertex attrib location remember the layout (location = n) keyword in vertex shader], 
 	//						size = [is vec2 = 2, vec3 = 3, etc..],
@@ -119,7 +119,7 @@ When linking the shaders into a program it links the outputs of each shader to t
 	glBindVertexArray(VAO);
 	someOpenGLFunctionThatDrawsOurTriangle();
 
-**Draw: **
+**Draw:**
 
 To draw our objects of choice OpenGL provides us with the `glDrawArrays` function that draws `primitives` using the **currently active shader**, the previously defined **vertex attribute configuration** and with the **VBO's vertex data** (indirectly bound via the VAO).
 
