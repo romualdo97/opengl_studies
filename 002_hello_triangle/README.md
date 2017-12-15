@@ -1,4 +1,58 @@
-# Fast reference
+# Warning
+Never forget the `in` keyword of GLSL for the `vertex attributes`.
+the next won´t work when configuring VBO data for point to the vertex attribute in the vertex shader (using `glVertexAttribPointer` function).
+
+	layout (location = 0) vec3 attribute_position;
+This is the correct method, using the `in` keyword for specify some like the `attribute` in old GLSL.
+
+	layout (location = 0) in vec3 attribute_position;
+
+In old GLSL this would look like:
+
+	layour (location = 0) attribute vec3 position;
+
+# About VAO, VBO y EBO
+
+![enter image description here](https://i.imgur.com/QEYMZlL.png)
+
+El **VAO** tiene **attribute pointers** que sirven de referencia a **vertex attributes** del **vertex shader**
+
+Se pasan datos de la CPU a la GPU usando los **VBO** cuyo `gl_target` es `GL_ARRAY_BUFFER`, estos datos pueden ser cualquier cosa, desde posiciones a colores o tiempo.
+
+El significado de un dato o conjunto de datos en el **VBO** (`GL_ARRAY_BUFFER`) depende de a que **vertex attribute** del **vertex shader** apunta dicho dato o conjunto de datos.
+
+La forma en que se configura a que **vertex attribute** del **vertex shader** apunta un dato del **VBO** es mediante la función **glVertexAtrribPointer**
+
+Un **VAO** (Vertex Array Object) tambien puede registrar el estado de un **EBO** (Element Buffer Object)
+
+El **EBO** es muy similar al **VBO** pero el target del EBO es `GL_ELEMENT_ARRAY_BUFFER` mientras que el del VBO es `GL_ARRAY_BUFFER`
+
+El **EBO** tambien sirver para pasar datos desde la CPU a la GPU, solo que estos **datos** son especiales
+
+los datos del **EBO** son especiales porque a diferencia de aquellos del **VBO** los del EBO no sirven para apuntar a ningún **vertex attribute** del **vertex shader**
+
+sin embargo los datos del **EBO** sirven para indicar mediante **indices** el "orden" en que la pipeline gráfica debe dibujar un conjunto de vértices en el **VBO**. (leer acerca del [post-transform cache](https://www.khronos.org/opengl/wiki/Post_Transform_Cache) para entender lo que ocurre realmente)
+
+Esto es útil porque permite dibujar quads (conjuntos de dos triángulos, es decir en 6 vértices) tan solo usando los datos de un VBO para cuatro vértices
+
+esta tecnica es conocida como **index drawing** y se considera una optimización importante a la hora de hacer computer graphics.
+
+# About Opengl Context and VBO
+
+GLFW is a helper library that will start the OpenGL "context" for us so that it talks to (almost) any operating system in the same way. The context is a running copy of OpenGL, tied to a window on the operating system. 
+
+We will copy this chunk of memory onto the graphics card in a unit called a vertex buffer object (VBO). To do this we "generate" an empty buffer, set it as the current buffer in OpenGL's state machine by "binding", then copy the points into the currently bound buffer.
+
+# Code buffer and objects review in triangle and quad drawing exercises
+
+**EBO:** Element Buffer Object, is an additional buffer for make possible `index drawing`. This drawing technique allow us to take adventage of the fancy `Post Transform Cache` this mean that if the system can detect that you have passed the same vertex attribute inputs, then the system can avoid executing the vertex shader again. Instead, if the outputs for that input attribute set is in the cache, the cached data can be used. This saves vertex processing.  read more [here](https://www.opengl.org/discussion_boards/showthread.php/199688-Element-Buffer-Objects) and [here](https://www.khronos.org/opengl/wiki/Post_Transform_Cache)
+
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 **VBO:** This buffer is generated for allocate memory in GPU from CPU, the buffer type of a Vertex Buffer Object is GL_ARRAY_BUFFER
 
@@ -13,7 +67,7 @@
 
 **Tell OpenGL how it should interpret the vertex data:**
 
-	// tell OpenGL how it should interpret the vertex data(per
+		// tell OpenGL how it should interpret the vertex data(per
 	// vertex attribute) using glVertexAttribPointer:
 	// glVertexAttribPointer(index = [vertex attrib location remember the layout (location = n) keyword in vertex shader], 
 	//						size = [is vec2 = 2, vec3 = 3, etc..],
@@ -119,7 +173,7 @@ When linking the shaders into a program it links the outputs of each shader to t
 	glBindVertexArray(VAO);
 	someOpenGLFunctionThatDrawsOurTriangle();
 
-**Draw:**
+**Draw: **
 
 To draw our objects of choice OpenGL provides us with the `glDrawArrays` function that draws `primitives` using the **currently active shader**, the previously defined **vertex attribute configuration** and with the **VBO's vertex data** (indirectly bound via the VAO).
 
@@ -150,13 +204,13 @@ Below you'll find an abstract representation of all the stages of the graphics p
 
 A fragment in OpenGL is all the data required for OpenGL to render a single pixel.
 
-# about vertex data
+# About vertex data
 
 With the vertex data defined we'd like to send it as input to the first process of the graphics pipeline: the vertex shader. This is done by creating memory on the GPU where we store the vertex data, configure how OpenGL should interpret the memory and specify how to send the data to the graphics card. The vertex shader then processes as much vertices as we tell it to from its memory.
 
 We manage this memory via so called vertex buffer objects (VBO) that can store a large number of vertices in the GPU's memory. The advantage of using those buffer objects is that we can send large batches of data all at once to the graphics card without having to send data a vertex a time. Sending data to the graphics card from the CPU is relatively slow, so wherever we can we try to send as much data as possible at once. Once the data is in the graphics card's memory the vertex shader has almost instant access to the vertices making it extremely fast
 
-# about Vertex Attribute Objects (VAO)
+# About Vertex Attribute Objects (VAO)
 
 And that is it! Everything we did the last few million pages led up to this moment, a VAO that stores our vertex attribute configuration and which VBO to use. Usually when you have multiple objects you want to draw, you first generate/configure all the VAOs (and thus the required VBO and attribute pointers) and store those for later use. The moment we want to draw one of our objects, we take the corresponding VAO, bind it, then draw the object and unbind the VAO again.
 
