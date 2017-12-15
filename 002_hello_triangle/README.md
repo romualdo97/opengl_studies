@@ -1,15 +1,16 @@
 # Warning
 Never forget the `in` keyword of GLSL for the `vertex attributes`.
-the next won´t work when configuring VBO data for point to the vertex attribute in the vertex shader (using `glVertexAttribPointer` function).
+the next snippet won´t work when configuring **VBO data** for point to some **vertex attribute** in the **vertex shader** (using `glVertexAttribPointer` function).
 
 	layout (location = 0) vec3 attribute_position;
-This is the correct method, using the `in` keyword for specify some like the `attribute` in old GLSL.
+
+Following snippet is the correct method, this uses the `in` keyword for specify something like the `attribute` in old GLSL, remember that if you don´t use neither the`in` nor the `attribute` the identifier would  be a simple variable and not a `vertex attribute` of the `vertex shader`.
 
 	layout (location = 0) in vec3 attribute_position;
 
 In old GLSL this would look like:
 
-	layour (location = 0) attribute vec3 position;
+	layout (location = 0) attribute vec3 position;
 
 # About VAO, VBO y EBO
 
