@@ -18,6 +18,9 @@ char const *fragment_shader_source = "#version 330 core\n"
 "FragColor = vec4(1.0f, 0.8f, 0.2f, 1.0f);\n"
 "}\n";
 
+void process_input(GLFWwindow *window);
+bool isLineMode = false;
+
 int main(void)
 {
 	// init glfw, configure window and its opengl context
@@ -85,6 +88,11 @@ int main(void)
 		std::cout << infolog << std::endl;
 	}
 
+	// query max numbers of vertex attributes
+	int nrAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+	std::cout << "Max number of vertex attributes supported " << nrAttributes << std::endl;
+
 	// quad vertex data in clock-wise orientation
 	float vertices[] = {
 		0.5, 0.5, 0.0, // right top
@@ -117,12 +125,14 @@ int main(void)
 	glEnableVertexAttribArray(0);
 
 	glViewport(0, 0, W, H);
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw lines
 	while(!glfwWindowShouldClose(window))
 	{
 		// background
 		glClearColor(0.5, 0.7, 0.5, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		process_input(window);
 
 		glUseProgram(shader_program);
 		glBindVertexArray(VAO);
@@ -135,4 +145,20 @@ int main(void)
 	}
 
 	return 0;
+}
+
+void process_input(GLFWwindow *window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+	if (glfwGetKey(window, GLFW_KEY_L))
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else if (glfwGetKey(window, GLFW_KEY_F))
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }

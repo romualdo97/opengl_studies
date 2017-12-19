@@ -18,7 +18,7 @@ In old GLSL this would look like:
 
 El **VAO** tiene **attribute pointers** que sirven de referencia a **vertex attributes** del **vertex shader**
 
-Se pasan datos de la CPU a la GPU usando los **VBO** cuyo `gl_target` es `GL_ARRAY_BUFFER`, estos datos pueden ser cualquier cosa, desde posiciones a colores o tiempo.
+Se pasan datos de la CPU a la GPU usando los **VBO** cuyo `gl_target` es `GL_ARRAY_BUFFER`, estos datos pueden ser cualquier cosa, desde posiciones a colores.
 
 El significado de un dato o conjunto de datos en el **VBO** (`GL_ARRAY_BUFFER`) depende de a que **vertex attribute** del **vertex shader** apunta dicho dato o conjunto de datos.
 
@@ -67,15 +67,16 @@ We will copy this chunk of memory onto the graphics card in a unit called a vert
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 **Tell OpenGL how it should interpret the vertex data:**
+![enter image description here](https://i.imgur.com/Vbd90e5.png)
 
-		// tell OpenGL how it should interpret the vertex data(per
+	// tell OpenGL how it should interpret the vertex data(per
 	// vertex attribute) using glVertexAttribPointer:
 	// glVertexAttribPointer(index = [vertex attrib location remember the layout (location = n) keyword in vertex shader], 
 	//						size = [is vec2 = 2, vec3 = 3, etc..],
 	//						type = [GL_FLOAT, GL_BOOL, etc..], 
 	//						normalize = [opengl should normalize the given data?],
 	//						stride = [distance between each "position" ternas in VBO],
-	//						start = [whare is the start index of "position"?];
+	//						start = [where is the start index of "position"?];
 	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
 	glEnableVertexAttribArray(0); // enable the vertex attribute at location 0
@@ -174,7 +175,7 @@ When linking the shaders into a program it links the outputs of each shader to t
 	glBindVertexArray(VAO);
 	someOpenGLFunctionThatDrawsOurTriangle();
 
-**Draw: **
+**Draw Arrays: **
 
 To draw our objects of choice OpenGL provides us with the `glDrawArrays` function that draws `primitives` using the **currently active shader**, the previously defined **vertex attribute configuration** and with the **VBO's vertex data** (indirectly bound via the VAO).
 
@@ -187,7 +188,15 @@ The second argument specifies the **starting index** of the **vertex array (`flo
 
 The last argument specifies how many vertices we want to draw, which is 3 (we only render 1 triangle from our data, which is exactly 3 vertices long).
 
+**Draw Elements: **
+		
+	// drawing quad
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+The first argument specifies the mode we want to draw in, similar to `glDrawArrays`. The second argument is the count or number of elements we'd like to draw. We specified 6 indices so we want to draw 6 vertices in total. The third argument is the type of the indices which is of type `GL_UNSIGNED_INT`. The last argument allows us to specify an offset in the `EBO` (or pass in an index array, but that is when you're not using element buffer objects), but we're just going to leave this at 0.
+
+The glDrawElements function takes its indices from the EBO currently bound to the GL_ELEMENT_ARRAY_BUFFER target. This means we have to bind the corresponding EBO each time we want to render an object with indices which seems again a bit cumbersome. It just so happens that a vertex array object also keeps track of element buffer object bindings. The element buffer object currently bound while a VAO is bound, is stored as the VAO's element buffer object. Binding to a VAO thus also automatically binds its EBO.
 
 # About graphic pipeline
 

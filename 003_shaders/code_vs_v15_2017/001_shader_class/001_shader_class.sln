@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001_shader_class", "001_shader_class.vcxproj", "{566A68C2-5F09-44B3-9DA1-1F50A63AE030}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Debug|x64.ActiveCfg = Debug|x64
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Debug|x64.Build.0 = Debug|x64
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Debug|x86.ActiveCfg = Debug|Win32
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Debug|x86.Build.0 = Debug|Win32
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Release|x64.ActiveCfg = Release|x64
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Release|x64.Build.0 = Release|x64
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Release|x86.ActiveCfg = Release|Win32
+		{566A68C2-5F09-44B3-9DA1-1F50A63AE030}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16130A0C-2E38-4AAF-90CB-53CA6AFF4292}
+	EndGlobalSection
+EndGlobal
