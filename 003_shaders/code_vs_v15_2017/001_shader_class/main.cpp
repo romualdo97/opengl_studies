@@ -3,30 +3,14 @@
 
 #include <iostream>
 
+#include "Shader.h"
+
 #define W 960
 #define H 480
 #define WINDOW_TITLE "My triangle exercise"
 
 void resize_framebuffer_cb(GLFWwindow *window, int w, int h);
 void process_input(GLFWwindow *window);
-
-char const *vertex_shader_src = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 aColor;\n"
-"out vec3 vColor;\n"
-"void main() { \n"
-"   gl_Position = vec4(vec3(aPos), 1.0);\n"
-"	vColor = aColor;\n"
-"}\n";
-
-char const *fragment_shader_src = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec3 vColor;\n"
-"uniform vec3 uColor;\n"
-"void main() {\n"
-"	FragColor = vec4(vColor, 1.0);\n"
-"}\n";
-
 
 int main(void)
 {
@@ -57,58 +41,8 @@ int main(void)
 	glfwSetFramebufferSizeCallback(window, resize_framebuffer_cb);
 
 	// ======================================================================
-
-	// generate vertex shader
-	unsigned int vertex_shader;
-	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	// attach the shader source code to shader object
-	glShaderSource(vertex_shader, 1, &vertex_shader_src, NULL);
-	glCompileShader(vertex_shader); // compile shader
-
-	// check for compile-time errors
-	int succes;
-	char infolog[512];
-	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &succes);
-	if (!succes)
-	{
-		glGetShaderInfoLog(vertex_shader, sizeof(infolog), NULL, infolog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infolog << "\n";
-	}
-
-	// generate fragment shader
-	unsigned int fragment_shader;
-	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER); // create shader
-	// attach shader source code to shader object
-	glShaderSource(fragment_shader, 1, &fragment_shader_src, NULL);
-	glCompileShader(fragment_shader); // compile shader
-
-	// check compile-time errors
-	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &succes);
-	if (!succes)
-	{
-		glGetShaderInfoLog(fragment_shader, sizeof(infolog), NULL, infolog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infolog << "\n";
-	}
-
-	// generate shader program object
-	unsigned int shader_program;
-	shader_program = glCreateProgram();
-	// attach the previuosly compiled shaders to shader program object
-	glAttachShader(shader_program, vertex_shader);
-	glAttachShader(shader_program, fragment_shader);
-	glLinkProgram(shader_program); // link shaders
-
-	// check linking errors
-	glGetProgramiv(shader_program, GL_LINK_STATUS, &succes);
-	if (!succes)
-	{
-		glGetProgramInfoLog(shader_program, sizeof(infolog), NULL, infolog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infolog << "\n";
-	}
-
-	// once linked, we no longer need vertex/fragment shader objects
-	glDeleteShader(vertex_shader);
-	glDeleteShader(fragment_shader);
+	// create new shader
+	Shader myShader("Shaders/myShader");
 	
 	// ======================================================================
 	
@@ -173,10 +107,10 @@ int main(void)
 		// locate uColor uniform
 		float t = (float)glfwGetTime();
 		float g = 0.5 + 0.5 * sin(t);
-		int uColorLoc = glGetUniformLocation(shader_program, "uColor");
+		//int uColorLoc = glGetUniformLocation(shader_program, "uColor");
 
-		glUseProgram(shader_program); // use a shader program
-		glUniform3f(uColorLoc, 1 - g, g, 0.0f);
+		myShader.use();	//glUseProgram(shader_program); // use a shader program
+		//glUniform3f(uColorLoc, 1 - g, g, 0.0f);
 
 		glBindVertexArray(VAO); // bind object VAO
 		glDrawArrays(GL_TRIANGLES, 0, 3); // draw triangle
