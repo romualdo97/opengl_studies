@@ -24,9 +24,9 @@ Texture filtering can be set for magnifying and minifying operations (when scali
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-> - `GL_NEAREST`, OpenGL selects the pixel which center is closest to the **texture coordinate**.
+- `GL_NEAREST`, OpenGL selects the pixel which center is closest to the **texture coordinate**.
 > ![enter image description here](https://i.imgur.com/NKJ9Duw.png)
-> - `GL_LINEAR (also known as (bi)linear filtering)` The smaller the distance from the texture coordinate to a texel's center, the more that texel's color contributes to the sampled color.
+- `GL_LINEAR (also known as (bi)linear filtering)` The smaller the distance from the texture coordinate to a texel's center, the more that texel's color contributes to the sampled color.
 > ![enter image description here](https://i.imgur.com/gpgYoXm.png)
 
 **Texture Mipmap filtering:**
