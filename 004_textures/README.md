@@ -13,9 +13,9 @@ If choosen `GL_CLAMP_TO_BORDER` we must to specify also a border color:
 The possible wrap modes are:
 		
 > - `GL_REPEAT`: The default behavior for textures. Repeats the texture image.
-- `GL_MIRRORED_REPEAT`: Same as GL_REPEAT but mirrors the image with each repeat.
-- `GL_CLAMP_TO_EDGE`: Clamps the coordinates between 0 and 1. The result is that higher coordinates become clamped to the edge, resulting in a stretched edge pattern.
-- `GL_CLAMP_TO_BORDER`: Coordinates outside the range are now given a user-specified border color.
+> - `GL_MIRRORED_REPEAT`: Same as GL_REPEAT but mirrors the image with each repeat.
+> - `GL_CLAMP_TO_EDGE`: Clamps the coordinates between 0 and 1. The result is that higher coordinates become clamped to the edge, resulting in a stretched edge pattern.
+> - `GL_CLAMP_TO_BORDER`: Coordinates outside the range are now given a user-specified border color.
 
 **Texture filtering:**
 
@@ -26,7 +26,7 @@ Texture filtering can be set for magnifying and minifying operations (when scali
 
 > - `GL_NEAREST`, OpenGL selects the pixel which center is closest to the **texture coordinate**.
 > ![enter image description here](https://i.imgur.com/NKJ9Duw.png)
-- `GL_LINEAR (also known as (bi)linear filtering)` The smaller the distance from the texture coordinate to a texel's center, the more that texel's color contributes to the sampled color.
+> - `GL_LINEAR (also known as (bi)linear filtering)` The smaller the distance from the texture coordinate to a texel's center, the more that texel's color contributes to the sampled color.
 > ![enter image description here](https://i.imgur.com/gpgYoXm.png)
 
 **Texture Mipmap filtering:**
