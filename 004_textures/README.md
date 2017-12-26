@@ -27,7 +27,7 @@ Texture filtering can be set for magnifying and minifying operations (when scali
 > - `GL_NEAREST`, OpenGL selects the pixel which center is closest to the **texture coordinate**.
 > ![enter image description here](https://i.imgur.com/NKJ9Duw.png)
 - `GL_LINEAR (also known as (bi)linear filtering)` The smaller the distance from the texture coordinate to a texel's center, the more that texel's color contributes to the sampled color.
-![enter image description here](https://i.imgur.com/gpgYoXm.png)
+> ![enter image description here](https://i.imgur.com/gpgYoXm.png)
 
 **Texture Mipmap filtering:**
 When object has an attached high resolution texture and is far away from camera in the scene, it will probably only produce a few fragments, OpenGL has difficulties retrieving the right color value for its fragment from the high resolution texture, since it has to pick a texture color for a fragment that spans a large part of the texture. This will produce visible artifacts on small objects, not to mention the waste of memory to use high resolution textures on small objects.
