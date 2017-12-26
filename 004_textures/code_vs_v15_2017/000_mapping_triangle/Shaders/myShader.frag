@@ -17,7 +17,7 @@ out vec4 FragColor;
 
 void main()
 {
-	// The output of this fragment shader 
+	// The texel of this fragment shader 
 	// is then the (filtered) color of the 
 	// texture at the (interpolated) texture coordinate.
 	

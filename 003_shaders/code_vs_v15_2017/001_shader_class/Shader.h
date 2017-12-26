@@ -10,7 +10,7 @@ class Shader
 {
 public:
 	// Constructor: Specify vertex and fragment shader path
-	// Shader("MyFrag.frag", "myVert.vert");
+	// Shader("myVert.vert", "MyFrag.frag");
 	Shader(GLchar const *vertexPath, GLchar const *fragmentPath);
 	// Constructor: Specify just a shader name (no shader file extension)
 	// this constructor assumes the vertex and fragment shader are named equally
