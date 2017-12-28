@@ -190,7 +190,7 @@ The second argument specifies the **starting index** of the **vertex array (`flo
 
 The last argument specifies how many vertices we want to draw, which is 3 (we only render 1 triangle from our data, which is exactly 3 vertices long).
 
-**Draw Elements: **
+**Draw Elements:**
 		
 	// drawing quad
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
