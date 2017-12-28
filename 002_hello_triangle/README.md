@@ -40,9 +40,11 @@ esta tecnica es conocida como **index drawing** y se considera una optimización
 
 # About Opengl Context and VBO
 
+**Context and GLFW:**
 GLFW is a helper library that will start the OpenGL "context" for us so that it talks to (almost) any operating system in the same way. The context is a running copy of OpenGL, tied to a window on the operating system. 
 
-We will copy this chunk of memory onto the graphics card in a unit called a vertex buffer object (VBO). To do this we "generate" an empty buffer, set it as the current buffer in OpenGL's state machine by "binding", then copy the points into the currently bound buffer.
+**Copyng data to VBO**
+We will copy a chunk of memory from cpu onto the graphics card in a unit called a vertex buffer object (VBO). To do this we "generate" an empty buffer, set it as the current buffer in OpenGL's state machine by "binding", then copy the data (position, colors, texcoords, etc...) into the currently bound buffer.
 
 # Code buffer and objects review in triangle and quad drawing exercises
 
@@ -175,7 +177,7 @@ When linking the shaders into a program it links the outputs of each shader to t
 	glBindVertexArray(VAO);
 	someOpenGLFunctionThatDrawsOurTriangle();
 
-**Draw Arrays: **
+**Draw Arrays:**
 
 To draw our objects of choice OpenGL provides us with the `glDrawArrays` function that draws `primitives` using the **currently active shader**, the previously defined **vertex attribute configuration** and with the **VBO's vertex data** (indirectly bound via the VAO).
 
