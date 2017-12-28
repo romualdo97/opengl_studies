@@ -2,7 +2,7 @@
 #include <GLFW\glfw3.h>
 #include <iostream>
 
-#define TITLE "Quad drawing"
+#define TITLE "Drawing a Quad"
 #define W 960
 #define H 860
 

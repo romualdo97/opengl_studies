@@ -5,7 +5,7 @@
 
 #define W 960
 #define H 480
-#define WINDOW_TITLE "My triangle exercise"
+#define WINDOW_TITLE "Studying the shader program input/output system"
 
 void resize_framebuffer_cb(GLFWwindow *window, int w, int h);
 void process_input(GLFWwindow *window);

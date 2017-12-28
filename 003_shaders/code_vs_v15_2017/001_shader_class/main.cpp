@@ -7,7 +7,7 @@
 
 #define W 960
 #define H 480
-#define WINDOW_TITLE "My triangle exercise"
+#define WINDOW_TITLE "Compiling a shader using custom class"
 
 void resize_framebuffer_cb(GLFWwindow *window, int w, int h);
 void process_input(GLFWwindow *window);

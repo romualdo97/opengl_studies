@@ -1,14 +1,22 @@
+// for opengl context and its commands
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
+// cpp libraries
 #include <iostream>
 
+// for data loading and shader compiling
 #include <RJcustoms\Shader.h>
 #include <stb\stb_image.h>
 
-#define W 960
-#define H 480
-#define WINDOW_TITLE "Sampling multiple textures in same shader"
+// for transformations
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
+
+#define W 820
+#define H 820
+#define WINDOW_TITLE "Animating mesh using matrix transformations"
 
 void resize_framebuffer_cb(GLFWwindow *window, int w, int h);
 void process_input(GLFWwindow *window);
@@ -111,10 +119,10 @@ int main(void)
 	// triangle vertex data 
 	float vertex_data[] = {
 		// positions (in NDC)				// colors						// texture coordinates
-		-0.3f, 0.5f, 0.0f,	/*left-top*/	1.0f, 0.0f, 0.0f,	/*red*/		0.0, 1.0,
-		0.3f, 0.5f, 0.0f,	/*right-top*/	0.0f, 1.0f, 0.0f,	/*green*/	1.0, 1.0,
-		-0.3f, -0.5f, 0.0f,	/*left-bttm*/	0.0f, 0.0f, 1.0f,	/*blue*/	0.0, 0.0,
-		0.3f, -0.5f, 0.0f,	/*right-bttm*/  0.0f, 1.0f, 1.0f,	/*#0ff*/	1.0, 0.0
+		-0.5f, 0.5f, 0.0f,	/*left-top*/	1.0f, 0.0f, 0.0f,	/*red*/		0.0, 1.0,
+		0.5f, 0.5f, 0.0f,	/*right-top*/	0.0f, 1.0f, 0.0f,	/*green*/	1.0, 1.0,
+		-0.5f, -0.5f, 0.0f,	/*left-bttm*/	0.0f, 0.0f, 1.0f,	/*blue*/	0.0, 0.0,
+		0.5f, -0.5f, 0.0f,	/*right-bttm*/  0.0f, 1.0f, 1.0f,	/*#0ff*/	1.0, 0.0
 	};
 
 	// index drawing data for draw a quad
@@ -165,11 +173,47 @@ int main(void)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	// pass EBO data from CPU to GPU
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_drawing_data), index_drawing_data, GL_STATIC_DRAW);
-								  
+	
 	// ======================================================================
+	// update and draw commands
 
 	// start viewport
 	glViewport(0, 0, W, H);
+
+	/*bind opengl object "texture" to GL_TEXTURE_2D target
+	in texture unit 0 (GL_TEXTURE0)*/
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	/*bind opengl object "texture2" to GL_TEXTURE_2D target
+	in texture unit 1 (GL_TEXTURE0)*/
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
+	/*
+	Note that finding the uniform location does not require
+	you to use the shader program first, but updating a uniform
+	does require you to first use the program (by calling
+	glUseProgram), because it sets the uniform on the currently
+	active shader program.
+	*/
+	
+	// locate uTime uniform
+	int uTimeLoc = glGetUniformLocation(myShader.ID, "uTime");
+	
+	// use shader program and pass uniforms
+	myShader.use();	//glUseProgram(shader_program); // use a shader program
+
+	// specify what texture unit should use the uniform GLSL sampler uTextureA
+	int uTexALoc = glGetUniformLocation(myShader.ID, "uTextureA");
+	glUniform1i(uTexALoc, 0); // use texture unit 0
+
+	// specify what texture unit should use the uniform GLSL sampler uTextureB
+	int uTexBLoc = glGetUniformLocation(myShader.ID, "uTextureB");
+	glUniform1i(uTexBLoc, 1); // use texture unit 1
+
+	// pass myTransformMatrix to uTransform uniform in shader program
+	int uTransLoc = glGetUniformLocation(myShader.ID, "uTransform");
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -178,41 +222,16 @@ int main(void)
 
 		process_input(window);
 
-		/*
-		Note that finding the uniform location does not require 
-		you to use the shader program first, but updating a uniform
-		does require you to first use the program (by calling
-		glUseProgram), because it sets the uniform on the currently
-		active shader program.
-		*/
-
-		// locate uColor uniform
 		float t = (float)glfwGetTime();
-		int uTimeLoc = glGetUniformLocation(myShader.ID, "uTime");
-		/*Bind the texture before calling the glDrawElements
-		and then assign the texture
-		to the fragment shader's sampler:*/
+		float s = 0.5 + 0.5 * sin((float)glfwGetTime());
 
-		/*bind opengl object "texture" to GL_TEXTURE_2D target
-		in texture unit 0 (GL_TEXTURE0)*/
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
-
-		/*bind opengl object "texture2" to GL_TEXTURE_2D target
-		in texture unit 1 (GL_TEXTURE0)*/
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
-
-		myShader.use();	//glUseProgram(shader_program); // use a shader program
 		glUniform1f(uTimeLoc, t);
-		
-		// specify what texture unit should use the uniform GLSL sampler uTextureA
-		int uTexALoc = glGetUniformLocation(myShader.ID, "uTextureA");
-		glUniform1i(uTexALoc, 0); // use texture unit 0
 
-		// specify what texture unit should use the uniform GLSL sampler uTextureB
-		int uTexBLoc = glGetUniformLocation(myShader.ID, "uTextureB");
-		glUniform1i(uTexBLoc, 1); // use texture unit 1
+		// rotate 45deg and scale 0.5
+		glm::mat4 myTransformMatrix;
+		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(0.0, 0.0, 1.0));
+		myTransformMatrix = glm::scale(myTransformMatrix, glm::vec3(s, s, s));
+		glUniformMatrix4fv(uTransLoc, 1, GL_FALSE, glm::value_ptr(myTransformMatrix));
 
 		glBindVertexArray(VAO); // bind object VAO
 		//glDrawArrays(GL_TRIANGLES, 0, 3); // draw triangle

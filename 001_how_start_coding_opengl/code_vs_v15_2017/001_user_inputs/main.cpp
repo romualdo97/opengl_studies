@@ -22,7 +22,7 @@ int main(void)
 
 	// =========================================================================
 	// 2. CREATE WINDOW AND MAKE ITS CONTEXT THE CURRENT
-	GLFWwindow *window = glfwCreateWindow(980, 640, "Hello Window", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(980, 640, "Basic GLFW input/output system", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Window creation failed!\n";
