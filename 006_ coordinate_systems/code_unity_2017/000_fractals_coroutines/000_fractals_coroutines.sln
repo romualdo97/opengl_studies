@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "000_fractals_coroutines", "000_fractals_coroutines.csproj", "{AFF0A3C5-B223-F3A2-5129-532505F6972A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFF0A3C5-B223-F3A2-5129-532505F6972A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF0A3C5-B223-F3A2-5129-532505F6972A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFF0A3C5-B223-F3A2-5129-532505F6972A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF0A3C5-B223-F3A2-5129-532505F6972A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
