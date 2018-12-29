@@ -40,7 +40,7 @@ int main(void)
 	glfwMakeContextCurrent(window);
 
 	// init glad for call opengl functions
-	if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Could not load GLAD\n";
 		return -1;
@@ -56,7 +56,7 @@ int main(void)
 	// ======================================================================
 	// tell stb library to flip images in load
 	stbi_set_flip_vertically_on_load(true);
-	
+
 	// load texture data using stb_image header library
 	int i_w, i_h, nrChannels;
 	unsigned char *image_data = stbi_load("wall.jpg", &i_w, &i_h, &nrChannels, 0);
@@ -65,7 +65,7 @@ int main(void)
 	int i2_w, i2_h, nrChannels2;
 	unsigned char *image_data2 = stbi_load("awesomeface.png", &i2_w, &i2_h, &nrChannels2, 0);
 
-	
+
 	// ======================================================================
 	// generate first texture
 	unsigned int texture;
@@ -94,7 +94,7 @@ int main(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image_data); // free memory
 
-	// generate second texture
+								 // generate second texture
 	unsigned int texture2;
 	glGenTextures(1, &texture2);
 	// activate texture unit 1
@@ -115,23 +115,85 @@ int main(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	// ======================================================================
-	
+
 	// triangle vertex data 
 	float vertex_data[] = {
+		// FRONT (Z-POSITIVE)
 		// positions (in NDC)				// colors						// texture coordinates
-		-0.5f, 0.5f, 0.0f,	/*left-top*/	1.0f, 0.0f, 0.0f,	/*red*/		0.0, 1.0,
-		0.5f, 0.5f, 0.0f,	/*right-top*/	0.0f, 1.0f, 0.0f,	/*green*/	1.0, 1.0,
-		-0.5f, -0.5f, 0.0f,	/*left-bttm*/	0.0f, 0.0f, 1.0f,	/*blue*/	0.0, 0.0,
-		0.5f, -0.5f, 0.0f,	/*right-bttm*/  0.0f, 1.0f, 1.0f,	/*#0ff*/	1.0, 0.0
+		-0.5f, 0.5f, 0.5f,	/*left-top*/	0.0f, 0.0f, 1.0f,	/*red*/		0.0, 1.0,
+		0.5f, 0.5f, 0.5f,	/*right-top*/	0.0f, 0.0f, 1.0f,	/*green*/	1.0, 1.0,
+		-0.5f, -0.5f, 0.5f,	/*left-bttm*/	0.0f, 0.0f, 1.0f,	/*blue*/	0.0, 0.0,
+		0.5f, -0.5f, 0.5f,	/*right-bttm*/  0.0f, 0.0f, 1.0f,	/*#0ff*/	1.0, 0.0,
+
+		// BACK (Z-NEGATIVE)
+		// positions (in NDC)				// colors						// texture coordinates
+		-0.5f, 0.5f, -0.5f,	/*left-top*/	0.0f, 0.0f, 0.5f,	/*red*/		0.0, 1.0,
+		0.5f, 0.5f, -0.5f,	/*right-top*/	0.0f, 0.0f, 0.5f,	/*green*/	1.0, 1.0,
+		-0.5f, -0.5f, -0.5f,/*left-bttm*/	0.0f, 0.0f, 0.5f,	/*blue*/	0.0, 0.0,
+		0.5f, -0.5f, -0.5f,	/*right-bttm*/  0.0f, 0.0f, 0.5f,	/*#0ff*/	1.0, 0.0,
+
+		// LEFT (X-NEGATIVE)
+		// positions (in NDC)				// colors						// texture coordinates
+		-0.5f, 0.5f, -0.5f,	/*left-top*/	0.5f, 0.0f, 0.0f,	/*red*/		0.0, 1.0,
+		-0.5f, 0.5f, 0.5f,	/*right-top*/	0.5f, 0.0f, 0.0f,	/*green*/	1.0, 1.0,
+		-0.5f, -0.5f, -0.5f, /*left-bttm*/	0.5f, 0.0f, 0.0f,	/*blue*/	0.0, 0.0,
+		-0.5f, -0.5f, 0.5f, /*right-bttm*/  0.5f, 0.0f, 0.0f,	/*#0ff*/	1.0, 0.0,
+
+		// RIGHT (X-POSITIVE)
+		// positions (in NDC)				// colors						// texture coordinates
+		0.5f, 0.5f, -0.5f,	/*left-top*/	1.0f, 0.0f, 0.0f,	/*red*/		0.0, 1.0,
+		0.5f, 0.5f, 0.5f,	/*right-top*/	1.0f, 0.0f, 0.0f,	/*green*/	1.0, 1.0,
+		0.5f, -0.5f, -0.5f, /*left-bttm*/	1.0f, 0.0f, 0.0f,	/*blue*/	0.0, 0.0,
+		0.5f, -0.5f, 0.5f, /*right-bttm*/   1.0f, 0.0f, 0.0f,	/*#0ff*/	1.0, 0.0,
+
+		// TOP (Y-POSITIVE)
+		// positions (in NDC)				// colors						// texture coordinates
+		-0.5f, 0.5f, -0.5f,	/*left-top*/	0.0f, 1.0f, 0.0f,	/*red*/		0.0, 1.0,
+		0.5f, 0.5f, -0.5f,	/*right-top*/	0.0f, 1.0f, 0.0f,	/*green*/	1.0, 1.0,
+		-0.5f, 0.5f, 0.5f, /*left-bttm*/	0.0f, 1.0f, 0.0f,	/*blue*/	0.0, 0.0,
+		0.5f, 0.5f, 0.5f, /*right-bttm*/    0.0f, 1.0f, 0.0f,	/*#0ff*/	1.0, 0.0,
+
+		// BOTTOM (Y-NEGATIVE)
+		// positions (in NDC)				// colors						// texture coordinates
+		-0.5f, -0.5f, -0.5f,/*left-top*/	0.0f, 0.5f, 0.0F,	/*red*/		0.0, 1.0,
+		-0.5f, -0.5f, 0.5f,	/*right-top*/	0.0f, 0.5f, 0.0f,	/*green*/	1.0, 1.0,
+		0.5f, -0.5f, -0.5f, /*left-bttm*/	0.0f, 0.5f, 0.0f,	/*blue*/	0.0, 0.0,
+		0.5f, -0.5f, 0.5f, /*right-bttm*/   0.0f, 0.5f, 0.0f,	/*#0ff*/	1.0, 0.0
 	};
 
-	// index drawing data for draw a quad
+	// index drawing data for draw a cube
+	unsigned int const BACK_OFFSET = 4;
+	unsigned int const LEFT_OFFSET = 8;
+	unsigned int const RIGHT_OFFSET = 12;
+	unsigned int const TOP_OFFSET = 16;
+	unsigned int const BOTTOM_OFFSET = 20;
 	unsigned int index_drawing_data[] = {
+		// FRONT (Z-POSITIVE) specified in "clock wise" "winding order"
 		0, 1, 2, /*first triangle*/
-		1, 3, 2	 /*second triangle*/
+		1, 3, 2, /*second triangle*/
+
+		// BACK (Z-NEGATIVE) specified in "counter-clock wise" "winding order"
+		0 + BACK_OFFSET, 2 + BACK_OFFSET, 1 + BACK_OFFSET, /*first triangle*/
+		1 + BACK_OFFSET, 2 + BACK_OFFSET, 3 + BACK_OFFSET, /*second triangle*/
+
+		// LEFT (X-NEGATIVE) specified in "clock wise" "winding order"
+		0 + LEFT_OFFSET, 1 + LEFT_OFFSET, 2 + LEFT_OFFSET, /*first triangle*/
+		1 + LEFT_OFFSET, 3 + LEFT_OFFSET, 2 + LEFT_OFFSET, /*second triangle*/
+
+		// LEFT (X-NEGATIVE) specified in "counter-clock wise" "winding order"
+		0 + RIGHT_OFFSET, 2 + RIGHT_OFFSET, 1 + RIGHT_OFFSET, /*first triangle*/
+		1 + RIGHT_OFFSET, 2 + RIGHT_OFFSET, 3 + RIGHT_OFFSET, /*second triangle*/
+
+		// TOP (Y-POSITIVE) specified in "counter-clock wise" "winding order"
+		0 + TOP_OFFSET, 1 + TOP_OFFSET, 2 + TOP_OFFSET, /*first triangle*/
+		1 + TOP_OFFSET, 3 + TOP_OFFSET, 2 + TOP_OFFSET, /*second triangle*/
+
+		// TOP (Y-POSITIVE) specified in "counter-clock wise" "winding order"
+		0 + BOTTOM_OFFSET, 1 + BOTTOM_OFFSET, 2 + BOTTOM_OFFSET, /*first triangle*/
+		1 + BOTTOM_OFFSET, 3 + BOTTOM_OFFSET, 2 + BOTTOM_OFFSET, /*second triangle*/
 	};
 
-	// generate VAO for store status of subsequent "vertex attribute" calls
+	// generate VAO for store status of subsequent "vertex attribute" calls and element array buffer configs
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO); // bind VAO
@@ -151,12 +213,11 @@ int main(void)
 	//						size = [is vec2 = 2, vec3 = 3, etc..],
 	//						type = [GL_FLOAT, GL_BOOL, etc..], 
 	//						normalize = [opengl should normalize the given data?],
-	//						stride = [distance between each "position" ternas in VBO],
+	//						stride = [distance in bytes between each "position" ternas in VBO],
 	//						start = [whare is the start index of "position"?];
-	
-	// indicate which part of vertex data are vertex positions
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
+	// indicate which part of vertex data are vertex positions
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0); // enable the vertex attribute at location 0
 
 	// indicate which part of vertex data are vertex colors
@@ -166,7 +227,12 @@ int main(void)
 	// indicate which part of vertex data are texture coordinates
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2); // enable the vertex attribute at location 2
-	
+
+	std::cout << "\n\nGL_ARRAY_BUFFER:\n";
+	std::cout << "sizeof(float): " << sizeof(float) << " bytes" << std::endl;
+	std::cout << "Num of indices at GL_ARRAY_BUFFER: " << sizeof(vertex_data) / sizeof(float) << std::endl;
+	std::cout << "Size reserved for GL_ARRAY_BUFFER: " << sizeof(vertex_data) << " bytes" << std::endl;
+
 	// generate EBO
 	unsigned int EBO;
 	glGenBuffers(1, &EBO);
@@ -174,12 +240,24 @@ int main(void)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	// pass EBO data from CPU to GPU
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index_drawing_data), index_drawing_data, GL_STATIC_DRAW);
-	
+
+	std::cout << "\n\nGL_ELEMENT_ARRAY_BUFFER:\n";
+	std::cout << "sizeof(unsigned int): " << sizeof(unsigned int) << " bytes" << std::endl;
+	std::cout << "Num of indices at GL_ELEMENT_ARRAY_BUFFER: " << sizeof(index_drawing_data) / sizeof(unsigned int) << std::endl;
+	std::cout << "Size reserved for GL_ELEMENT_ARRAY_BUFFER: " << sizeof(index_drawing_data) << " bytes" << std::endl;
+
+	std::cout << "\n\nTOTAL BYTES SENt TO GPU: " << sizeof(index_drawing_data) + sizeof(vertex_data) << " bytes" << std::endl;
 	// ======================================================================
 	// update and draw commands
 
 	// start viewport
 	glViewport(0, 0, W, H);
+
+	// define the winding order
+	glFrontFace(GL_CW); // defines "winding order" for specify which triangle side is considered the "front" face 
+	glEnable(GL_CULL_FACE); // enable the face culling
+	glCullFace(GL_BACK); // cull back faces
+	//glEnable(GL_DEPTH_TEST);
 
 	/*bind opengl object "texture" to GL_TEXTURE_2D target
 	in texture unit 0 (GL_TEXTURE0)*/
@@ -198,24 +276,24 @@ int main(void)
 	glUseProgram), because it sets the uniform on the currently
 	active shader program.
 	*/
-	
+
 	// locate uTime uniform
 	int uTimeLoc = glGetUniformLocation(myShader.ID, "uTime");
-	
+
 	// use shader program and pass uniforms
 	myShader.use();	//glUseProgram(shader_program); // use a shader program
 
-	// specify what texture unit should use the uniform GLSL sampler uTextureA
+					// specify what texture unit should use the uniform GLSL sampler uTextureA
 	int uTexALoc = glGetUniformLocation(myShader.ID, "uTextureA");
 	glUniform1i(uTexALoc, 0); // use texture unit 0
 
-	// specify what texture unit should use the uniform GLSL sampler uTextureB
+							  // specify what texture unit should use the uniform GLSL sampler uTextureB
 	int uTexBLoc = glGetUniformLocation(myShader.ID, "uTextureB");
 	glUniform1i(uTexBLoc, 1); // use texture unit 1
 
-	// pass myTransformMatrix to uTransform uniform in shader program
+							  // pass myTransformMatrix to uTransform uniform in shader program
 	int uTransLoc = glGetUniformLocation(myShader.ID, "uTransform");
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.2, 0.5, 0.2, 1.0); // set the clear color
@@ -230,13 +308,23 @@ int main(void)
 
 		// rotate 45deg and scale 0.5
 		glm::mat4 myTransformMatrix;
-		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(0.0, 0.0, 1.0));
-		myTransformMatrix = glm::scale(myTransformMatrix, glm::vec3(s, s, s));
+		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(0.0, 1.0, 0.0));
+		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(1.0, 0.0, 0.0));
+		//myTransformMatrix = glm::scale(myTransformMatrix, glm::vec3(s, s, s));
 		glUniformMatrix4fv(uTransLoc, 1, GL_FALSE, glm::value_ptr(myTransformMatrix));
 
 		glBindVertexArray(VAO); // bind object VAO
-		//glDrawArrays(GL_TRIANGLES, 0, 3); // draw triangle
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // draw a quad
+		
+		// read more at: https://people.eecs.ku.edu/~jrmiller/Courses/672/InClass/3DModeling/glDrawElements.html
+		// glDrawArrays(GL_TRIANGLES, 0, 3); // draw triangle
+		const int VERTICES_PER_TRIANGLE = 3;
+		const int NUM_OF_TRIANGLES = 12;
+		GLenum mode = GL_TRIANGLES; // Specifies what kind of primitives to render.
+		GLsizei count = VERTICES_PER_TRIANGLE * NUM_OF_TRIANGLES; // Specifies the number of elements to be rendered.
+		GLenum type = GL_UNSIGNED_INT; // Specifies the type of the values in indices.Must be one of GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT.
+		GLvoid * indices = nullptr; // Specifies a pointer to the location where the indices are stored
+		// Passing nullptr as the final parameter to glDrawElements tells the vertex fetch processor to use the currently bound element buffer object when extracting per - vertex data for vertex shader executions.
+		glDrawElements(mode, count, type, indices); // draw a quad
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
