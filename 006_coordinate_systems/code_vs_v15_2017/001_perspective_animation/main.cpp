@@ -18,6 +18,9 @@
 #define H 820
 #define WINDOW_TITLE "Animating mesh using matrix transformations"
 
+// use winding order to draw correctly cube faces? else use dept testing method
+#define USE_CUBE_CULLING
+
 void resize_framebuffer_cb(GLFWwindow *window, int w, int h);
 void process_input(GLFWwindow *window);
 
@@ -94,7 +97,7 @@ int main(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(image_data); // free memory
 
-								 // generate second texture
+	// generate second texture
 	unsigned int texture2;
 	glGenTextures(1, &texture2);
 	// activate texture unit 1
@@ -167,6 +170,8 @@ int main(void)
 	unsigned int const RIGHT_OFFSET = 12;
 	unsigned int const TOP_OFFSET = 16;
 	unsigned int const BOTTOM_OFFSET = 20;
+
+#ifdef USE_CUBE_CULLING
 	unsigned int index_drawing_data[] = {
 		// FRONT (Z-POSITIVE) specified in "clock wise" "winding order"
 		0, 1, 2, /*first triangle*/
@@ -192,6 +197,33 @@ int main(void)
 		0 + BOTTOM_OFFSET, 1 + BOTTOM_OFFSET, 2 + BOTTOM_OFFSET, /*first triangle*/
 		1 + BOTTOM_OFFSET, 3 + BOTTOM_OFFSET, 2 + BOTTOM_OFFSET, /*second triangle*/
 	};
+#else
+	unsigned int index_drawing_data[] = {
+		// FRONT (Z-POSITIVE) specified in "clock wise" "winding order"
+		0, 1, 2, /*first triangle*/
+		1, 3, 2, /*second triangle*/
+
+		// BACK (Z-NEGATIVE) specified in "clock wise" "winding order"
+		1 + BACK_OFFSET, 2 + BACK_OFFSET, 0 + BACK_OFFSET, /*first triangle*/
+		3 + BACK_OFFSET, 2 + BACK_OFFSET, 1 + BACK_OFFSET, /*second triangle*/
+
+		// LEFT (X-NEGATIVE) specified in "clock wise" "winding order"
+		0 + LEFT_OFFSET, 1 + LEFT_OFFSET, 2 + LEFT_OFFSET, /*first triangle*/
+		1 + LEFT_OFFSET, 3 + LEFT_OFFSET, 2 + LEFT_OFFSET, /*second triangle*/
+
+		// LEFT (X-NEGATIVE) specified in "clock wise" "winding order"
+		1 + RIGHT_OFFSET, 2 + RIGHT_OFFSET, 0 + RIGHT_OFFSET, /*first triangle*/
+		 3 + RIGHT_OFFSET, 2 + RIGHT_OFFSET, 1 + RIGHT_OFFSET, /*second triangle*/
+
+		// TOP (Y-POSITIVE) specified in "clock wise" "winding order"
+		2 + TOP_OFFSET, 1 + TOP_OFFSET, 0 + TOP_OFFSET, /*first triangle*/
+		2 + TOP_OFFSET, 3 + TOP_OFFSET, 1 + TOP_OFFSET, /*second triangle*/
+
+		// TOP (Y-POSITIVE) specified in "clock wise" "winding order"
+		2 + BOTTOM_OFFSET, 1 + BOTTOM_OFFSET, 0 + BOTTOM_OFFSET, /*first triangle*/
+		2 + BOTTOM_OFFSET, 3 + BOTTOM_OFFSET, 1 + BOTTOM_OFFSET, /*second triangle*/
+	};
+#endif // USE_CUBE_CULLING
 
 	// generate VAO for store status of subsequent "vertex attribute" calls and element array buffer configs
 	unsigned int VAO;
@@ -246,7 +278,7 @@ int main(void)
 	std::cout << "Num of indices at GL_ELEMENT_ARRAY_BUFFER: " << sizeof(index_drawing_data) / sizeof(unsigned int) << std::endl;
 	std::cout << "Size reserved for GL_ELEMENT_ARRAY_BUFFER: " << sizeof(index_drawing_data) << " bytes" << std::endl;
 
-	std::cout << "\n\nTOTAL BYTES SENt TO GPU: " << sizeof(index_drawing_data) + sizeof(vertex_data) << " bytes" << std::endl;
+	std::cout << "\n\nTOTAL BYTES SENT TO GPU: " << sizeof(index_drawing_data) + sizeof(vertex_data) << " bytes" << std::endl;
 	// ======================================================================
 	// update and draw commands
 
@@ -255,10 +287,12 @@ int main(void)
 
 	// define the winding order
 	glFrontFace(GL_CW); // defines "winding order" for specify which triangle side is considered the "front" face 
-	glEnable(GL_CULL_FACE); // enable the face culling
-	glCullFace(GL_BACK); // cull back faces
-	//glEnable(GL_DEPTH_TEST);
-
+#ifdef USE_CUBE_CULLING
+	 glEnable(GL_CULL_FACE); // enable the face culling
+	 glCullFace(GL_BACK); // cull back faces
+#else
+	glEnable(GL_DEPTH_TEST);
+#endif // USE_CUBE_CULLING
 	/*bind opengl object "texture" to GL_TEXTURE_2D target
 	in texture unit 0 (GL_TEXTURE0)*/
 	glActiveTexture(GL_TEXTURE0);
@@ -277,13 +311,13 @@ int main(void)
 	active shader program.
 	*/
 
-	// locate uTime uniform
-	int uTimeLoc = glGetUniformLocation(myShader.ID, "uTime");
-
 	// use shader program and pass uniforms
 	myShader.use();	//glUseProgram(shader_program); // use a shader program
 
-					// specify what texture unit should use the uniform GLSL sampler uTextureA
+	// locate uTime uniform
+	int uTimeLoc = glGetUniformLocation(myShader.ID, "uTime");
+
+	// specify what texture unit should use the uniform GLSL sampler uTextureA
 	int uTexALoc = glGetUniformLocation(myShader.ID, "uTextureA");
 	glUniform1i(uTexALoc, 0); // use texture unit 0
 
@@ -291,13 +325,19 @@ int main(void)
 	int uTexBLoc = glGetUniformLocation(myShader.ID, "uTextureB");
 	glUniform1i(uTexBLoc, 1); // use texture unit 1
 
-							  // pass myTransformMatrix to uTransform uniform in shader program
-	int uTransLoc = glGetUniformLocation(myShader.ID, "uTransform");
-
+	// get uniform uModel, uView and uProj location at shader program
+	int uModelLoc = glGetUniformLocation(myShader.ID, "uModel");
+	int uViewLoc = glGetUniformLocation(myShader.ID, "uView");
+	int uProjLoc = glGetUniformLocation(myShader.ID, "uProj");
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		glClearColor(0.2, 0.5, 0.2, 1.0); // set the clear color
-		glClear(GL_COLOR_BUFFER_BIT); // clear color buffer bitfield
+#ifdef USE_CUBE_CULLING
+		glClear(GL_COLOR_BUFFER_BIT);
+#else
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear color buffer bitfield
+#endif // usecub
 
 		process_input(window);
 
@@ -306,12 +346,21 @@ int main(void)
 
 		glUniform1f(uTimeLoc, t);
 
-		// rotate 45deg and scale 0.5
-		glm::mat4 myTransformMatrix;
-		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(0.0, 1.0, 0.0));
-		myTransformMatrix = glm::rotate(myTransformMatrix, t, glm::vec3(1.0, 0.0, 0.0));
-		//myTransformMatrix = glm::scale(myTransformMatrix, glm::vec3(s, s, s));
-		glUniformMatrix4fv(uTransLoc, 1, GL_FALSE, glm::value_ptr(myTransformMatrix));
+		// create model matrix
+		glm::mat4 model;
+		model = glm::rotate(model, t, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, t, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uModelLoc, 1, GL_FALSE, glm::value_ptr(model)); // GLint location,	GLsizei count,	GLboolean transpose, const GLfloat* value
+
+		// create view matrix
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); // note that we're translating the scene in the reverse direction of where we want to move
+		glUniformMatrix4fv(uViewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		// creat projection matrix
+		glm::mat4 projection;
+		projection = glm::perspective(glm::radians(45.0f), (float)(W / H), 0.1f, 100.0f);
+		glUniformMatrix4fv(uProjLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glBindVertexArray(VAO); // bind object VAO
 		
