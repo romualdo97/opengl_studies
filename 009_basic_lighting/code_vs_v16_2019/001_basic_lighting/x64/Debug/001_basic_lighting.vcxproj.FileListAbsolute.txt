@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\009_basic_lighting\code_vs_v16_2019\001_basic_lighting\x64\Debug\001_basic_lighting.exe
+D:\romualdo\studies\opengl_studies\009_basic_lighting\code_vs_v16_2019\001_basic_lighting\x64\Debug\001_basic_lighting.pdb
