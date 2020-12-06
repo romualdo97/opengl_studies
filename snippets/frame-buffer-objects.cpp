@@ -51,8 +51,17 @@ DrawScene();
 // switch back to window-system-provided (default) framebuffer
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+// (Exercise)
 // Maybe add a quad that overlaps all the screen and render the generated texture to it.
 // Or whatever you need to do post-processing effects.
+// second pass
+glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+glClear(GL_COLOR_BUFFER_BIT);
+
+glBindVertexArray(quadVAO);
+glDisable(GL_DEPTH_TEST); // To make sure the quad is over all previously rendered.
+glBindTexture(GL_TEXTURE_2D, textureColorbuffer); // The same texture attached to the created Frame Buffer Object
+glDrawArrays(GL_TRIANGLES, 0, 6); // Draw the rectangle.
 ...
 
 // Source from: http://www.songho.ca/opengl/gl_fbo.html
