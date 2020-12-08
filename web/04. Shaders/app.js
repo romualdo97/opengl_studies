@@ -73,20 +73,23 @@ const material = new THREE.RawShaderMaterial( {
   uniform float time;
   void main()	{
     vec2 uv = gl_FragCoord.xy / vec2( 800, 600 );
-    gl_FragColor = vec4(uv.x, 0., 0., 1.0);
+    gl_FragColor = vec4(sin(time * 0.1), uv.x, uv.y, 1.0);
   }
   `
 } );
-const plane = new THREE.Mesh( geometry, material );
-// plane.position.x = -10;
-scene.add( plane );
+const object = new THREE.Mesh( geometry, material );
+// object.position.x = -10;
+scene.add( object );
 
 // Render Loop
 var render = function () {
   requestAnimationFrame( render );
 
   // required if controls.enableDamping or controls.autoRotate are set to true
-	controls.update();
+  controls.update();
+  
+  const time = performance.now();
+  object.material.uniforms.time.value = time * 0.005;
 
   // Render the scene
   renderer.render(scene, camera);
