@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\005_transformations\code_vs_v15_2017\000_hello_glm\x64\Debug\000_hello_glm.exe
+D:\romualdo\studies\opengl_studies\005_transformations\code_vs_v15_2017\000_hello_glm\x64\Debug\000_hello_glm.pdb

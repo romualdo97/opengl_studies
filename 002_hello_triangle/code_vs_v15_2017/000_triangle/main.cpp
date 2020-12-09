@@ -112,7 +112,11 @@ int main(void)
 		// (positions)in NDC
 		-0.3f, 0.5f, 0.0f,	// left-top vertex position
 		0.3f, 0.5f, 0.0f,	// right-top vertex position
-		0.0f, -0.5f, 0.0f	// botton vertex position
+		0.3f, -0.5f, 0.0f,	// botton-right vertex position
+
+		//-0.3f, 0.5f, 0.0f,	// left-top vertex position
+		//0.3f, -0.5f, 0.0f,	// botton-right vertex position
+		//-0.3f, -0.5f, 0.0f,	// bottom-left vertex position
 	};
 
 	// generate VAO for store status of subsequent "vertex attribute" calls
@@ -120,7 +124,7 @@ int main(void)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO); // bind VAO
 
-	// generate VBO for allocate memory in GPU
+	// generate VBO for allocating memory in GPU
 	unsigned int VBO;
 	glGenBuffers(1, &VBO);
 	// bind VBO with GL_ARRAY_BUFFER target

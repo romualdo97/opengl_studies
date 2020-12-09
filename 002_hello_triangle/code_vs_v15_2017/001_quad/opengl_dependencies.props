@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(OPENGL_DIR)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OPENGL_DIR)lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OPENGL_DIR)/include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENGL_DIR)/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>

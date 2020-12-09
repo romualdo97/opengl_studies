@@ -29,6 +29,8 @@ void process_input(GLFWwindow *window);
 
 glm::vec3 cameraPos(7.0f);
 glm::vec3 lightPos(1.2f, 1.0f, 0.0f);
+bool isProjection = true;
+bool isKeyDown = false;
 
 int main(void)
 {
@@ -210,9 +212,17 @@ int main(void)
 		view = glm::lookAt(cameraPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Generates a Look At matrix // note that we're translating the scene in the reverse direction of where we want to move
 		glUniformMatrix4fv(uViewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-		// creat projection matrix
+		// create projection matrix
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), (float)(W / H), 0.1f, 100.0f);
+		if (isProjection)
+		{
+			projection = glm::perspective(glm::radians(45.0f), (float)(W / H), 0.1f, 100.0f);
+		}
+		else
+		{
+			projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 0.1f, 100.0f);
+		}
+
 		glUniformMatrix4fv(uProjLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		// pass objectColor, lightColor, lightPos to illuminated object
@@ -297,4 +307,18 @@ void process_input(GLFWwindow *window)
 		lightPos.x -= lightSpeed;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT))
 		lightPos.x += lightSpeed;
+
+	// ======================================================
+	// Change projection mode
+	if (glfwGetKey(window, GLFW_KEY_SPACE) && !isKeyDown)
+	{
+		isProjection = !isProjection;
+		isKeyDown = true;
+	}
+
+	if (!glfwGetKey(window, GLFW_KEY_SPACE) && isKeyDown)
+	{
+		//isProjection = !isProjection;
+		isKeyDown = false;
+	}
 }

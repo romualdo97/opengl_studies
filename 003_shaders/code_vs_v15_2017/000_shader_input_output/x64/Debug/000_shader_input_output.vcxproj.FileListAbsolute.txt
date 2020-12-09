@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\003_shaders\code_vs_v15_2017\000_shader_input_output\x64\Debug\000_shader_input_output.exe
+D:\romualdo\studies\opengl_studies\003_shaders\code_vs_v15_2017\000_shader_input_output\x64\Debug\000_shader_input_output.pdb

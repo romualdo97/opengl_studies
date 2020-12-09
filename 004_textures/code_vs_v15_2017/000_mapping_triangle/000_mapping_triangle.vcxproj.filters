@@ -21,10 +21,10 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\Dropbox\AdditionalLibraries\OpenGL\include\glad\glad.c">
+    <ClCompile Include="stb_image.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.cpp">
+    <ClCompile Include="..\..\..\000_projectDependencies\include\glad\glad.c">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

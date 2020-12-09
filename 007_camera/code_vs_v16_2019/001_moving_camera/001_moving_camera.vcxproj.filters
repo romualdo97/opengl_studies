@@ -28,4 +28,12 @@
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\myShader.frag">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="Shaders\myShader.vert">
+      <Filter>assets</Filter>
+    </None>
+  </ItemGroup>
 </Project>

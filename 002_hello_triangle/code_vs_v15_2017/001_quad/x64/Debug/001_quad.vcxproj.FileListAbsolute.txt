@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\002_hello_triangle\code_vs_v15_2017\001_quad\x64\Debug\001_quad.exe
+D:\romualdo\studies\opengl_studies\002_hello_triangle\code_vs_v15_2017\001_quad\x64\Debug\001_quad.pdb
