@@ -66,3 +66,15 @@ glDrawArrays(GL_TRIANGLES, 0, 6); // Draw the rectangle.
 
 // Source from: http://www.songho.ca/opengl/gl_fbo.html
 // Source from: https://learnopengl.com/Advanced-OpenGL/Framebuffers
+
+float ambientStrength = 0.1;
+vec3 ambient = ambientStrength * lightColor;
+
+float diff = max(dot(norm, lightDir), 0.0);
+vec3 diffuse = diff * lightColor;
+
+// Where FragPos is the World Space fragment position.
+vec3 viewDir = normalize(viewPos - FragPos);
+vec3 reflectDir = reflect(-lightDir, norm);
+float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+vec3 specular = specularStrength * spec * lightColor;  
