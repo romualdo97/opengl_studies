@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\022_framebuffers\code_vs_v16_2019\001_framebuffers\x64\Debug\001_framebuffers.exe
+D:\romualdo\studies\opengl_studies\022_framebuffers\code_vs_v16_2019\001_framebuffers\x64\Debug\001_framebuffers.pdb
