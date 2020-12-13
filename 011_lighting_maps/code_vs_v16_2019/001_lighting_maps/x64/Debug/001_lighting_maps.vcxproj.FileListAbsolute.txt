@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\011_lighting_maps\code_vs_v16_2019\001_lighting_maps\x64\Debug\001_lighting_maps.exe
+D:\romualdo\studies\opengl_studies\011_lighting_maps\code_vs_v16_2019\001_lighting_maps\x64\Debug\001_lighting_maps.pdb
