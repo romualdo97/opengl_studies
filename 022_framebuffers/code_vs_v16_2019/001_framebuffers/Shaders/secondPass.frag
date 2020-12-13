@@ -10,9 +10,15 @@ out vec4 FragColor;
 
 // from CPU as uniform
 uniform sampler2D uScreenTexture;
+uniform float uTime;
 
 void main()
 {	
 	vec4 texel = texture(uScreenTexture, vTexCoord);
-	FragColor = vec4(texel.r);
+
+	float t = 0.5 * sin(uTime) + 0.5;
+
+	vec4 finalColor = mix(vec4(texel.r), texel, t);
+
+	FragColor = finalColor;
 }

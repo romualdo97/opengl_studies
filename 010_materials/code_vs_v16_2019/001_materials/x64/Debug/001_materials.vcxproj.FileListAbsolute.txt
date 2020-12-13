@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\010_materials\code_vs_v16_2019\001_materials\x64\Debug\001_materials.exe
+D:\romualdo\studies\opengl_studies\010_materials\code_vs_v16_2019\001_materials\x64\Debug\001_materials.pdb

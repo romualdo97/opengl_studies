@@ -153,6 +153,10 @@ int main(void)
 		glDisable(GL_DEPTH_TEST);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+		unsigned int uTimeLoc = glGetUniformLocation(secondPassShader.ID, "uTime");
+		glUniform1f(uTimeLoc, glfwGetTime());
+
 		quad.draw();
 
 		glfwSwapBuffers(window);
