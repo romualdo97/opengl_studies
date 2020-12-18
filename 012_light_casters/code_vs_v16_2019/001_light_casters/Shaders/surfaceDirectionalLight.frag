@@ -1,5 +1,7 @@
 #version 330 core
 
+// Surface that can receive light from a directional light
+
 // Keep in mind that sampler2D is a so called opaque type which means we can't
 // instantiate these types, but only define them as uniforms. If the struct
 // would be instantiated other than as a uniform (like a function parameter)
@@ -14,8 +16,9 @@ struct Material {
 
 // Light properties
 struct Light {
-    vec3 position;
-  
+    // vec3 position; // no longer necessary when using directional lights.
+	vec3 direction;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -43,7 +46,7 @@ void main()
 	
 	// calculate diffuse
 	vec3 norm = normalize(vNormal);
-	vec3 lightDir = normalize(uLight.position - vFragPos);  
+	vec3 lightDir = normalize(-uLight.direction); // normalize(uLight.position - vFragPos);  
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 diffuse = uLight.diffuse * (diff * texture(uMaterial.diffuse, vTexCoord).rgb);
 

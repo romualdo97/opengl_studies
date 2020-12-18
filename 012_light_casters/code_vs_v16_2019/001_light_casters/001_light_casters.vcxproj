@@ -151,8 +151,11 @@
   <ItemGroup>
     <None Include="Shaders\light.frag" />
     <None Include="Shaders\light.vert" />
-    <None Include="Shaders\surface.frag" />
     <None Include="Shaders\surface.vert" />
+    <None Include="Shaders\surfaceBasicPointLight.frag" />
+    <None Include="Shaders\surfaceDirectionalLight.frag" />
+    <None Include="Shaders\surfacePointLight.frag" />
+    <None Include="Shaders\surfaceSpotLight.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

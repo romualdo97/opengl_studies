@@ -1,5 +1,8 @@
 // use winding order to draw correctly cube faces? else use depth testing method
-// #define USE_CUBE_CULLING
+//#define USE_BASIC_POINT_LIGHT
+//#define USE_DIRECTIONAL_LIGHT
+//#define USE_POINT_LIGHT
+#define USE_SPOT_LIGHT
 
 // for OpenGL context and its commands
 #include <glad\glad.h>
@@ -61,7 +64,25 @@ int main(void)
 
 	// ======================================================================
 	// create new shader
-	Shader myShader("Shaders/surface"); // Shader program for object that will be illuminated
+	// surfaceBasicPointLight, surfaceDirectionalLight
+
+#ifdef USE_BASIC_POINT_LIGHT
+	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfaceBasicPointLight.frag"); // Shader program for object that will be illuminated
+#endif
+
+#ifdef USE_DIRECTIONAL_LIGHT
+	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfaceDirectionalLight.frag"); // Shader program for object that will be illuminated
+	glm::vec3 lightDir(0.0f, 0.0f, -1.0f);
+#endif
+
+#ifdef USE_POINT_LIGHT
+	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfacePointLight.frag"); // Shader program for object that will be illuminated
+#endif
+
+#ifdef USE_SPOT_LIGHT
+	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfaceSpotLight.frag"); // Shader program for object that will be illuminated
+#endif
+
 	Shader lightShader("Shaders/light"); // Shader program for light source
 
 	// ======================================================================
@@ -91,21 +112,42 @@ int main(void)
 	*/
 
 	// Material related
-	int uMaterialDiffuseLoc = glGetUniformLocation(myShader.ID, "uMaterial.diffuse");
-	int uMaterialSpecularLoc = glGetUniformLocation(myShader.ID, "uMaterial.specular");
-	int uMaterialShininessLoc = glGetUniformLocation(myShader.ID, "uMaterial.shininess");
+	int uMaterialDiffuseLoc = glGetUniformLocation(surfaceShader.ID, "uMaterial.diffuse");
+	int uMaterialSpecularLoc = glGetUniformLocation(surfaceShader.ID, "uMaterial.specular");
+	int uMaterialShininessLoc = glGetUniformLocation(surfaceShader.ID, "uMaterial.shininess");
 
 	// Light related
-	int uViewPosLoc = glGetUniformLocation(myShader.ID, "uViewPos");
-	int uLightPosLoc = glGetUniformLocation(myShader.ID, "uLight.position");
-	int uLightAmbientLoc = glGetUniformLocation(myShader.ID, "uLight.ambient");
-	int uLightDiffuseLoc = glGetUniformLocation(myShader.ID, "uLight.diffuse");
-	int uLightSpecularLoc = glGetUniformLocation(myShader.ID, "uLight.specular");
+	int uViewPosLoc = glGetUniformLocation(surfaceShader.ID, "uViewPos");
+
+#ifdef USE_BASIC_POINT_LIGHT
+	int uLightPosLoc = glGetUniformLocation(surfaceShader.ID, "uLight.position");
+#endif
+
+#ifdef USE_DIRECTIONAL_LIGHT
+	int uLightDirLoc = glGetUniformLocation(surfaceShader.ID, "uLight.direction");
+#endif
+
+#ifdef USE_POINT_LIGHT
+	int uLightPosLoc = glGetUniformLocation(surfaceShader.ID, "uLight.position");
+	int uLightConstantLoc = glGetUniformLocation(surfaceShader.ID, "uLight.constant");
+	int uLightLinearLoc = glGetUniformLocation(surfaceShader.ID, "uLight.linear");
+	int uLightQuadraticLoc = glGetUniformLocation(surfaceShader.ID, "uLight.quadratic");
+#endif
+
+#ifdef USE_SPOT_LIGHT
+	int uLightPosLoc = glGetUniformLocation(surfaceShader.ID, "uLight.position");
+	int uLightDirLoc = glGetUniformLocation(surfaceShader.ID, "uLight.direction");
+	int uLightCutOffLoc = glGetUniformLocation(surfaceShader.ID, "uLight.cutOff");
+#endif
+
+	int uLightAmbientLoc = glGetUniformLocation(surfaceShader.ID, "uLight.ambient");
+	int uLightDiffuseLoc = glGetUniformLocation(surfaceShader.ID, "uLight.diffuse");
+	int uLightSpecularLoc = glGetUniformLocation(surfaceShader.ID, "uLight.specular");
 
 	// get uniform uModel, uView and uProj location at shader program
-	int uModelLoc = glGetUniformLocation(myShader.ID, "uModel");
-	int uViewLoc = glGetUniformLocation(myShader.ID, "uView");
-	int uProjLoc = glGetUniformLocation(myShader.ID, "uProj");
+	int uModelLoc = glGetUniformLocation(surfaceShader.ID, "uModel");
+	int uViewLoc = glGetUniformLocation(surfaceShader.ID, "uView");
+	int uProjLoc = glGetUniformLocation(surfaceShader.ID, "uProj");
 
 	// get location of objectColor and lightColor
 	int uLightColorSourceLoc = glGetUniformLocation(lightShader.ID, "uLightColor");
@@ -144,7 +186,7 @@ int main(void)
 		// Draw box that will be illuminated
 
 		// slect shader program and pass uniforms
-		myShader.use();	//glUseProgram(shader_program); // use a shader program
+		surfaceShader.use();	//glUseProgram(shader_program); // use a shader program
 		glBindVertexArray(box.VAO); // bind box VAO
 
 		// create view matrix
@@ -170,7 +212,29 @@ int main(void)
 
 		// pass light info
 		glUniform3fv(uViewPosLoc, 1, glm::value_ptr(cameraPos));
+
+#ifdef USE_BASIC_POINT_LIGHT
 		glUniform3fv(uLightPosLoc, 1, glm::value_ptr(lightPos));
+#endif
+#ifdef USE_DIRECTIONAL_LIGHT
+		glUniform3fv(uLightDirLoc, 1, glm::value_ptr(lightDir));
+#endif
+#ifdef USE_POINT_LIGHT
+		// Attenuation coefficients
+		// https://www.desmos.com/calculator/wtt73x5kwp
+		// https://learnopengl.com/Lighting/Light-casters
+		glUniform1f(uLightConstantLoc, 1.0f);
+		glUniform1f(uLightLinearLoc, 0.0f);
+		glUniform1f(uLightQuadraticLoc, 0.3f);
+		glUniform3fv(uLightPosLoc, 1, glm::value_ptr(lightPos));
+#endif
+
+#ifdef USE_SPOT_LIGHT
+		glUniform3fv(uLightPosLoc, 1, glm::value_ptr(cameraPos));
+		glUniform3fv(uLightDirLoc, 1, glm::value_ptr(glm::normalize(-cameraPos)));
+		glUniform1f(uLightCutOffLoc, glm::cos(glm::radians(12.0f)));
+#endif
+
 		glUniform3fv(uLightAmbientLoc, 1, &(ambientColor.x));
 		glUniform3fv(uLightDiffuseLoc, 1, &(diffuseColor.x)); // darken diffuse light a bit
 		glUniform3f(uLightSpecularLoc, 1.0f, 1.0f, 1.0f);
