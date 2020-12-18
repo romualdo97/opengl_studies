@@ -4,6 +4,10 @@
 
 Shader::Shader(GLchar const *vertexPath, GLchar const *fragmentPath)
 {
+	// 1. retrieve the vertex/fragment source code from filePath
+	std::cout << "Shader instanced will find source files at:\n\t";
+	std::cout << vertexPath << " and " << fragmentPath << "\n";
+
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::ifstream vShaderFile;
@@ -31,7 +35,11 @@ Shader::Shader(GLchar const *vertexPath, GLchar const *fragmentPath)
 	}
 	// convert from string to c-like string
 	char const *vertexCode_cstr = vertexCode.c_str();
-	char const *fragmentCode_cstr = vertexCode.c_str();
+	char const *fragmentCode_cstr = fragmentCode.c_str();
+
+	// =====================================================
+	// 2. compile shaders
+	compileShader(vertexCode_cstr, fragmentCode_cstr);
 }
 
 Shader::Shader(GLchar const *shaderName)
