@@ -138,6 +138,7 @@ int main(void)
 	int uLightPosLoc = glGetUniformLocation(surfaceShader.ID, "uLight.position");
 	int uLightDirLoc = glGetUniformLocation(surfaceShader.ID, "uLight.direction");
 	int uLightCutOffLoc = glGetUniformLocation(surfaceShader.ID, "uLight.cutOff");
+	int uLightOuterCutOffLoc = glGetUniformLocation(surfaceShader.ID, "uLight.outerCutOff");
 #endif
 
 	int uLightAmbientLoc = glGetUniformLocation(surfaceShader.ID, "uLight.ambient");
@@ -233,6 +234,7 @@ int main(void)
 		glUniform3fv(uLightPosLoc, 1, glm::value_ptr(cameraPos));
 		glUniform3fv(uLightDirLoc, 1, glm::value_ptr(glm::normalize(-cameraPos)));
 		glUniform1f(uLightCutOffLoc, glm::cos(glm::radians(12.0f)));
+		glUniform1f(uLightOuterCutOffLoc, glm::cos(glm::radians(15.0f)));
 #endif
 
 		glUniform3fv(uLightAmbientLoc, 1, &(ambientColor.x));

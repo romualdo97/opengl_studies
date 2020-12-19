@@ -19,6 +19,7 @@ struct Light {
     vec3 position;
 	vec3 direction;
 	float cutOff;
+	float outerCutOff;
   
     vec3 ambient;
     vec3 diffuse;
@@ -45,28 +46,40 @@ void main()
 	// Calculate if this shader is inside the spot
 	vec3 lightDir = normalize(uLight.position - vFragPos);
 	float cosine = dot(lightDir, normalize(-uLight.direction));
-	float attenuation = 0.0;
+	float epsilon = uLight.cutOff - uLight.outerCutOff;
+	float intensity = clamp((cosine - uLight.outerCutOff) / epsilon, 0.0, 1.0);
 	
-	if (cosine > uLight.cutOff)
+	// Store the final color
+	vec3 finalColor = vec3(1.0);
+
+	if (cosine > uLight.outerCutOff) // do lighting calculations
 	{
-		attenuation = 1.0;
-	}
-
-	// calculate ambient color
-    vec3 ambient = uLight.ambient * texture(uMaterial.diffuse, vTexCoord).rgb;
+		// calculate ambient color
+		vec3 ambient = uLight.ambient * texture(uMaterial.diffuse, vTexCoord).rgb;
 	
-	// calculate diffuse
-	vec3 norm = normalize(vNormal);
-	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = uLight.diffuse * (diff * texture(uMaterial.diffuse, vTexCoord).rgb);
+		// calculate diffuse
+		vec3 norm = normalize(vNormal);
+		float diff = max(dot(norm, lightDir), 0.0);
+		vec3 diffuse = uLight.diffuse * (diff * texture(uMaterial.diffuse, vTexCoord).rgb);
 
-	// Calculate specular
-	vec3 viewDir = normalize(uViewPos - vFragPos);
-	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
-	vec3 specular = uLight.specular * (spec * texture(uMaterial.specular, vTexCoord).rgb);  
+		// Calculate specular
+		vec3 viewDir = normalize(uViewPos - vFragPos);
+		vec3 reflectDir = reflect(-lightDir, norm);
+		float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
+		vec3 specular = uLight.specular * (spec * texture(uMaterial.specular, vTexCoord).rgb);  
 
-	// Output color
-	vec3 result = ambient + diffuse + specular;
-	FragColor = vec4(result * attenuation, 1.0);
+		// Apply smoth edges to spot
+		diffuse *= intensity;
+		specular *= intensity;
+
+		// Output color
+		finalColor = ambient + diffuse + specular;
+	}
+	else
+	{
+		// else, use ambient light so scene isn't completely dark outside the spotlight.
+		finalColor = uLight.ambient * texture(uMaterial.diffuse, vTexCoord).rgb;
+	}
+	
+	FragColor = vec4(finalColor, 1.0);
 }
