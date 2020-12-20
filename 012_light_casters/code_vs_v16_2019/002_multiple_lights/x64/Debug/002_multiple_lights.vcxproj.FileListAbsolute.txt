@@ -1,0 +1,2 @@
+D:\romualdo\studies\opengl_studies\012_light_casters\code_vs_v16_2019\002_multiple_lights\x64\Debug\002_multiple_lights.exe
+D:\romualdo\studies\opengl_studies\012_light_casters\code_vs_v16_2019\002_multiple_lights\x64\Debug\002_multiple_lights.pdb

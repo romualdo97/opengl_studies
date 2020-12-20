@@ -162,6 +162,12 @@ void Shader::use()
 	glUseProgram(ID);
 }
 
+void Shader::setMatrix(std::string const& name, glm::mat4x4& value)
+{
+	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(value));
+}
+
 void Shader::setBool(std::string const &name, bool value)
 {
 	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
@@ -177,7 +183,31 @@ void Shader::setInt(std::string const &name, int value)
 void Shader::setFloat(std::string const &name, float value)
 {
 	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
-	glUniform1i(uniformLoc, value);
+	glUniform1f(uniformLoc, value);
+}
+
+void Shader::setFloatArray(std::string const& name, GLsizei arraySize, float* firstItem)
+{
+	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
+	glUniform3fv(uniformLoc, arraySize, firstItem);
+}
+
+void Shader::setVec3(std::string const& name, glm::vec3& value)
+{
+	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
+	glUniform3fv(uniformLoc, 1, &(value.x));
+}
+
+void Shader::setVec3(std::string const& name, float x, float y, float z)
+{
+	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
+	glUniform3f(uniformLoc, x, y, z);
+}
+
+void Shader::setVec3Array(std::string const& name, GLsizei arraySize, glm::vec3 firstItem)
+{
+	unsigned int uniformLoc = glGetUniformLocation(ID, name.c_str());
+	glUniform3fv(uniformLoc, arraySize, &(firstItem.x));
 }
 
 Shader::~Shader()
