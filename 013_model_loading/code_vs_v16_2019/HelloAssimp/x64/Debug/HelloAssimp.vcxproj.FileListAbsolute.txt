@@ -1,0 +1,4 @@
+D:\assimp-5.0.1\builds\HelloAssimp\x64\Debug\HelloAssimp.exe
+D:\assimp-5.0.1\builds\HelloAssimp\x64\Debug\HelloAssimp.pdb
+D:\romualdo\studies\opengl_studies\013_model_loading\code_vs_v16_2019\HelloAssimp\x64\Debug\HelloAssimp.exe
+D:\romualdo\studies\opengl_studies\013_model_loading\code_vs_v16_2019\HelloAssimp\x64\Debug\HelloAssimp.pdb
