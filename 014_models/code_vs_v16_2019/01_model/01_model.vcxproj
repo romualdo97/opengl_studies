@@ -33,7 +33,12 @@
     <ClInclude Include="TextureUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\surface.frag" />
     <None Include="Shaders\surface.vert" />
+    <None Include="Shaders\surfaceBasicPointLight.frag" />
+    <None Include="Shaders\surfaceDirectionalLight.frag" />
+    <None Include="Shaders\surfacePointLight.frag" />
+    <None Include="Shaders\surfaceSpotLight.frag" />
     <None Include="Shaders\surfaceUnlit.frag" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

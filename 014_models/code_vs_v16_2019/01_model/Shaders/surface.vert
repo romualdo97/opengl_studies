@@ -14,6 +14,7 @@ uniform mat4 uProj;
 
 // VERTEX SHADER OUTPUT: pass info from 'vs' to 'fs'
 out vec3 vNormal;
+out vec3 vFragPos;
 out vec2 vTexCoord;
 
 // LOCAL IDENTIFIERS
@@ -24,4 +25,5 @@ void main()
 	gl_Position = uProj * uView * uModel * vec4(aPos, 1.0);
 	vNormal = aNormal;
 	vTexCoord = aTexCoord;
+	vFragPos = (uModel * vec4(aPos, 0.0)).xyz;
 }

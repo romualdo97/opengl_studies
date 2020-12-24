@@ -20,14 +20,17 @@
 #define H 820
 #define WINDOW_TITLE "Loading usin custom Model class"
 
+// Use a basic unlit shader or directional?
+//#define USE_UNLIT_SHADER
+
 // Draw car or catapult? (select only once at time)
-#define DRAW_CAR
-//#define DRAW_CATAPULT
+//#define DRAW_CAR
+#define DRAW_CATAPULT
 
 #if defined(DRAW_CAR) && defined(DRAW_CATAPULT)
 #undef DRAW_CAR // If car and catapult, then draw only catapult
 #elif !defined(DRAW_CAR) && !defined(DRAW_CATAPULT)
-#define DRAW_CAR // By default draw catapult
+#define DRAW_CATAPULT // By default draw catapult
 #endif //  DRAW_CAR && DRAW_CATAPULT
 
 
@@ -69,11 +72,15 @@ int main(void)
 
 	// ======================================================================
 	// create new shader
+#ifdef USE_UNLIT_SHADER
 	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfaceUnlit.frag");
+#else
+	Shader surfaceShader("Shaders/surface.vert", "Shaders/surfaceDirectionalLight.frag");
+#endif
 
 	// ======================================================================
 	// load models data and send to gpu
-	
+
 #ifdef DRAW_CAR
 	Model carModel("Models/car.obj");
 #endif
@@ -100,7 +107,7 @@ int main(void)
 	{
 		glClearColor(0.2, 0.5, 0.2, 1.0); // set the clear color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear color buffer bitfield
-		
+
 		process_input(window);
 
 		float t = 0.0f; // (float)glfwGetTime();
@@ -121,7 +128,7 @@ int main(void)
 #endif
 
 		surfaceShader.setMatrix("uModel", model);
-		
+
 		// create and pass view matrix
 		glm::mat4 view = glm::mat4(1.0f);
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp); // Generates a Look At matrix
@@ -131,6 +138,24 @@ int main(void)
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), (float)(W / H), 0.1f, 1000.0f); // projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 0.1f, 100.0f);
 		surfaceShader.setMatrix("uProj", projection);
+
+		// pass directional light info
+#if !defined(USE_UNLIT_SHADER)
+		// Directional light color
+		glm::vec3 lightColor = glm::vec3(1.0f);
+		// Darken the light intensity
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.7f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.5f);
+
+		// pass camera position
+		surfaceShader.setVec3("uViewPos", cameraPos);
+
+		// pass directional light info
+		surfaceShader.setVec3("uLight.direction", -1.0f, -1.0f, 0.0f);
+		surfaceShader.setVec3("uLight.ambient", ambientColor);
+		surfaceShader.setVec3("uLight.diffuse", diffuseColor);
+		surfaceShader.setVec3("uLight.specular", 1.0f, 1.0f, 1.0f);
+#endif
 
 		// Draw a car object
 		glEnable(GL_DEPTH_TEST);

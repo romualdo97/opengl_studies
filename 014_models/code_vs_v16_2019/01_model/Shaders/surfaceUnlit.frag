@@ -21,5 +21,5 @@ out vec4 FragColor;
 
 void main()
 {
-	FragColor = texture(uMaterial.diffuseTexture1, vTexCoord); //vec4(vTexCoord, 0.0, 1.0);
+	FragColor = vec4(vNormal, 1.0);
 }

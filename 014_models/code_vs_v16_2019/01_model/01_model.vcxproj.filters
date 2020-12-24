@@ -58,5 +58,20 @@
     <None Include="Shaders\surfaceUnlit.frag">
       <Filter>assets</Filter>
     </None>
+    <None Include="Shaders\surface.frag">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="Shaders\surfaceBasicPointLight.frag">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="Shaders\surfaceDirectionalLight.frag">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="Shaders\surfacePointLight.frag">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="Shaders\surfaceSpotLight.frag">
+      <Filter>assets</Filter>
+    </None>
   </ItemGroup>
 </Project>
