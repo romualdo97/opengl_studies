@@ -1,0 +1,89 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# Datei erstellt: 07.09.2014 19:08:44
+
+newmtl Material__63
+	Ns 70.000000
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.900000 0.900000 0.900000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka catapultTextures/holz-map.uvw.jpg
+	map_Kd catapultTextures/holz-map.uvw.jpg
+	map_Ks catapultTextures/holz-map_SPEC.jpg
+	map_bump catapultTextures/holz-map_COLOR.jpg
+	bump catapultTextures/holz-map_COLOR.jpg
+
+newmtl 07___Default
+	Ns 70.000000
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 0.588235 0.588235 0.588235
+	Ks 0.900000 0.900000 0.900000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka catapultTextures/holz.map-2.jpg
+	map_Kd catapultTextures/holz.map-2.jpg
+	map_Ks catapultTextures/holz_SPEC.jpg
+	map_bump catapultTextures/holz_COLOR.jpg
+	bump catapultTextures/holz_COLOR.jpg
+
+newmtl Material__61
+	Ns 90.000000
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.900000 0.900000 0.900000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka catapultTextures/metal-map.jpg
+	map_Kd catapultTextures/metal-map.jpg
+	map_Ks catapultTextures/metal-map_SPEC.jpg
+	map_bump catapultTextures/metal-map_SPEC.jpg
+	bump catapultTextures/metal-map_SPEC.jpg
+	map_refl Map__46_Raytrace.tga
+
+newmtl 13___Default
+	Ns 79.999992
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588235 0.588235 0.588235
+	Kd 0.588235 0.588235 0.588235
+	Ks 0.900000 0.900000 0.900000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka catapultTextures/wurfarm-map.jpg
+	map_Kd catapultTextures/wurfarm-map.jpg
+	map_Ks catapultTextures/wurfarm-map-spec-.jpg
+	map_bump catapultTextures/wurfarm-map-bump.jpg
+	bump catapultTextures/wurfarm-map-bump.jpg
+
+newmtl Material__64
+	Ns 79.999992
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.900000 0.900000 0.900000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka catapultTextures/rad-map-wood-metal.jpg
+	map_Kd catapultTextures/rad-map-wood-metal.jpg
+	map_Ks catapultTextures/rad-map-wood-metal-ref-.jpg
+	map_bump catapultTextures/rad-map-wood-metal-crazy_COLOR.jpg
+	bump catapultTextures/rad-map-wood-metal-crazy_COLOR.jpg
+	map_refl Map__62_Raytrace.tga
